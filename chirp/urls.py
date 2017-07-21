@@ -14,9 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import include,url
+from django.conf.urls.static import static
 from django.contrib import admin
+from chirp import settings
 
 urlpatterns = [
     url(r'', include('message.urls')),
     url(r'^admin/', admin.site.urls),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

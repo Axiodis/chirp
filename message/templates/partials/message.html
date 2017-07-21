@@ -1,0 +1,29 @@
+<div id="tb-testimonial" class="testimonial testimonial-default">
+    <div class="row">
+        <div class="col-md-2 col-sm-3 col-xs-3">
+            <div class="testimonial-desc">
+                <div>
+                    <img src="https://placeholdit.imgix.net/~text?txtsize=9&txt=100%C3%97100&w=100&h=100" alt="" />
+                </div>
+                <div class="testimonial-writer">
+                    <div class="testimonial-writer-name"><strong>@{{ message.user.username }}</strong></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-10 col-sm-9 col-xs-9">
+            <div class="testimonial-section">
+                {{ message.status }}
+
+                {% if message.image %}
+                    <img src="{{ message.image.url }}" class="img-responsive message-image" >
+                {% endif %}
+
+                <br>
+                <div class="pull-right">
+                    <small>{{ message.created }}</small>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>

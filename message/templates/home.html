@@ -9,107 +9,53 @@
 
         </div>
         <div class="col-sm-6">
+            {% if user.is_authenticated %}
 
-					<div class="media">
-						<a class="media-left" href="#fake">
-							<img alt="" class="media-object img-rounded" src="http://placehold.it/35x35">
-						</a>
-						<div class="media-body">
-							<div class="form-group has-feedback">
-								<label class="control-label sr-only" for="inputSuccess5">Hidden label</label>
-								<input type="text" class="form-control" id="search2" aria-describedby="search">
-								<span class="glyphicon glyphicon-camera form-control-feedback" aria-hidden="true"></span>
-								<span id="search2" class="sr-only">(success)</span>
-							</div>
-						</div>
-					</div>
-
-            <div>
                 <div class="media">
-                    <a class="media-left" href="#fake">
-                        <img alt="" class="media-object img-rounded" src="http://placehold.it/64x64">
+                    <a class="media-left" href="#">
+                        <img alt="" class="media-object img-rounded" height="35px" width="35px" src="http://placehold.it/35x35">
                     </a>
                     <div class="media-body">
-                        <h4 class="media-heading">Media heading</h4>
-                        <p>Dolorem aspernatur rerum, iure? Culpa iste aperiam sequi, fuga, quasi rerum, eum, quo natus tenetur officia placeat.</p>
-                        <ul class="nav nav-pills nav-pills-custom">
-                            <li><a href="#"><span class="glyphicon glyphicon-share-alt"></span></a></li>
-                            <li><a href="#"><span class="glyphicon glyphicon-retweet"></span></a></li>
-                            <li><a href="#"><span class="glyphicon glyphicon-star"></span></a></li>
-                            <li><a href="#"><span class="glyphicon glyphicon-option-horizontal"></span></a></li>
-                        </ul>
+                        <form method="post" action="{% url 'message' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group has-feedback">
+
+                                <div class="input-group add-on">
+                                    <input name="status" type="text" placeholder="Chirp something" class="form-control">
+                                    <div class="input-group-btn">
+                                        <label for="image" class="btn btn-default"><i class="glyphicon glyphicon-camera"></i></label>
+                                    </div>
+                                </div>
+
+                                <input type="file" name="image" id="image" class="inputfile" />
+
+                                {% if form.errors.items %}
+                                    <div class="alert alert-danger">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        {% for error in form.status.errors %}
+                                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                            {{ error }}
+                                        {% endfor %}
+                                        {% for error in form.image.errors %}
+                                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                <br>
+                                <button class="btn btn-info pull-right">Send</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </div>
+            {% endif %}
 
-					<div class="media">
-						<a class="media-left" href="#fake">
-							<img alt="" class="media-object img-rounded" src="http://placehold.it/64x64">
-						</a>
-						<div class="media-body">
-							<h4 class="media-heading">Media heading</h4>
-							<p>Dolorem aspernatur rerum, iure? Culpa iste aperiam sequi, fuga, quasi rerum, eum, quo natus tenetur officia placeat.</p>
-							<ul class="nav nav-pills nav-pills-custom">
-								<li><a href="#"><span class="glyphicon glyphicon-share-alt"></span></a></li>
-								<li><a href="#"><span class="glyphicon glyphicon-retweet"></span></a></li>
-								<li><a href="#"><span class="glyphicon glyphicon-star"></span></a></li>
-								<li><a href="#"><span class="glyphicon glyphicon-option-horizontal"></span></a></li>
-							</ul>
-						</div>
+            <br>
 
-					</div>
-					<div class="media">
-						<a class="media-left" href="#fake">
-							<img alt="" class="media-object img-rounded" src="http://placehold.it/64x64">
-						</a>
-						<div class="media-body">
-							<h4 class="media-heading">Media heading</h4>
-							<p>Dolorem aspernatur rerum, iure? Culpa iste aperiam sequi, fuga, quasi rerum, eum, quo natus tenetur officia placeat.</p>
-							<ul class="nav nav-pills nav-pills-custom">
-								<li><a href="#"><span class="glyphicon glyphicon-share-alt"></span></a></li>
-								<li><a href="#"><span class="glyphicon glyphicon-retweet"></span></a></li>
-								<li><a href="#"><span class="glyphicon glyphicon-star"></span></a></li>
-								<li><a href="#"><span class="glyphicon glyphicon-option-horizontal"></span></a></li>
-							</ul>
-						</div>
-
-					</div>
-					<div class="media">
-						<a class="media-left" href="#fake">
-							<img alt="" class="media-object img-rounded" src="http://placehold.it/64x64">
-						</a>
-						<div class="media-body">
-							<h4 class="media-heading">Media heading</h4>
-							<p>Dolorem aspernatur rerum, iure? Culpa iste aperiam sequi, fuga, quasi rerum, eum, quo natus tenetur officia placeat.</p>
-							<ul class="nav nav-pills nav-pills-custom">
-								<li><a href="#"><span class="glyphicon glyphicon-share-alt"></span></a></li>
-								<li><a href="#"><span class="glyphicon glyphicon-retweet"></span></a></li>
-								<li><a href="#"><span class="glyphicon glyphicon-star"></span></a></li>
-								<li><a href="#"><span class="glyphicon glyphicon-option-horizontal"></span></a></li>
-							</ul>
-						</div>
-
-					</div>
-					<div class="media">
-						<a class="media-left" href="#fake">
-							<img alt="" class="media-object img-rounded" src="http://placehold.it/64x64">
-						</a>
-						<div class="media-body">
-							<h4 class="media-heading">Media heading</h4>
-							<p>Dolorem aspernatur rerum, iure? Culpa iste aperiam sequi, fuga, quasi rerum, eum, quo natus tenetur officia placeat.</p>
-							<ul class="nav nav-pills nav-pills-custom">
-								<li><a href="#"><span class="glyphicon glyphicon-share-alt"></span></a></li>
-								<li><a href="#"><span class="glyphicon glyphicon-retweet"></span></a></li>
-								<li><a href="#"><span class="glyphicon glyphicon-star"></span></a></li>
-								<li><a href="#"><span class="glyphicon glyphicon-option-horizontal"></span></a></li>
-							</ul>
-						</div>
-					</div>
-
-
-			<br>
-			<br>
-			<br>
+            {% for message in messages %}
+                {% include 'partials/message.html' with message=message %}
+                <hr>
+            {% endfor %}
 		</div>
         <div class="col-sm-3">
 

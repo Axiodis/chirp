@@ -2,6 +2,14 @@ from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
+from message.models import Message
+
+
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ['status', 'image']
+
 
 class RegisterForm(forms.ModelForm):
     class Meta:

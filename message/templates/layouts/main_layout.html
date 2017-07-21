@@ -5,6 +5,8 @@
         <meta charset="UTF-8">
         <title>Chirp</title>
 
+        <link rel="stylesheet" href="{% static 'css/main_style.css' %}">
+
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"
                 integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
                 crossorigin="anonymous"></script>
@@ -24,41 +26,55 @@
     </head>
 
     <body>
+        <div class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <div class="navbar-collapse navbar-collapse-1 collapse" aria-expanded="true">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="{% url 'index' %}"><span class="glyphicon glyphicon-home"></span> Chirp</a>
+                        </li>
+                        <li>
+                            <a href="#fake"><span class="glyphicon glyphicon-bell"></span> Notifications</a>
+                        </li>
+                        <li>
+                            <a href="#fake"><span class="glyphicon glyphicon-envelope"></span> Messages</a>
+                        </li>
+                    </ul>
+                    <div class="navbar-form navbar-right">
+                        {% if user.is_authenticated %}
+                            {{ user }}
+                            <div class="btn-group">
+                                <img src="{% static 'images/default_icon.png' %}" height="40px" width="40px"
+                                     class="img-circle dropdown-toggle profile-image" data-toggle="dropdown"
+                                     aria-haspopup="true" aria-expanded="false">
+                                <ul class="dropdown-menu">
+                                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                                    <li><a href="{% url 'profile' user.username %}">Profile</a></li>
+                                </ul>
+                            </div>
 
-    <div class="navbar navbar-default navbar-static-top">
-        <div class="container">
-            <div class="navbar-collapse navbar-collapse-1 collapse" aria-expanded="true">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="{% url 'index' %}"><span class="glyphicon glyphicon-home"></span> Chirp</a>
-                    </li>
-                    <li>
-                        <a href="#fake"><span class="glyphicon glyphicon-bell"></span> Notifications</a>
-                    </li>
-                    <li>
-                        <a href="#fake"><span class="glyphicon glyphicon-envelope"></span> Messages</a>
-                    </li>
-                </ul>
-                <div class="navbar-form navbar-right">
-                    {% if user.is_authenticated %}
-                        <div class="btn-group">
-                        <img src="{% static 'images/default_icon.png' %}" height="40px" width="40px" class="img-circle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        </img>
-                        <ul class="dropdown-menu">
-                            <li><a href="{% url 'logout' %}">Logout</a></li>
-                            <li><a href="#">Profile</a></li>
-                        </ul>
+    {#                        <div class="dropdown">#}
+    {#                            <div class="dropdown-toggle" id="menu1" data-toggle="dropdown">#}
+    {#                                <img src="{% static 'images/default_icon.png' %}" height="40px" width="40px">#}
+    {#                            </div>#}
+    {#                            <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">#}
+    {#                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Menu item 1</a></li>#}
+    {#                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Menu item 2</a></li>#}
+    {#                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Menu item 3</a></li>#}
+    {#                            </ul>#}
+    {#                        </div>#}
+
+                        {% else %}
+                            <a class="btn btn-primary" href="{% url 'register' %}">Sign In</a>
+                            <a class="btn btn-default" href="{% url 'login' %}">Log In</a>
+                        {% endif %}
                     </div>
-                    {% else %}
-                        <a class="btn btn-primary" href="{% url 'register' %}">Sign In</a>
-                        <a class="btn btn-default" href="{% url 'login' %}">Log In</a>
-                    {% endif %}
                 </div>
             </div>
         </div>
-    </div>
 
-        {% block content %}
-        {% endblock %}
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
     </body>
 </html>
