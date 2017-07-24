@@ -22,8 +22,88 @@
                 <div class="pull-right">
                     <small>{{ message.created }}</small>
                 </div>
-                <br>
+                {% if user.is_authenticated %}
+                    <hr>
+                    <div class="icon-bar">
+
+                        <div class="glyphicon glyphicon-thumbs-up icon-item like {% if message.liked%}like-color{% endif %}"
+                             data-id="{{ message.id }}"
+                             data-value="1"
+                             data-url="{% url 'like' %}"></div>
+
+                        <div class="glyphicon glyphicon-thumbs-down icon-item dislike {% if message.disliked%}dislike-color{% endif %}"
+                             data-id="{{ message.id }}"
+                             data-value = 0
+                             data-url="{% url 'like' %}"></div>
+
+
+                        <div class="glyphicon glyphicon-share icon-item"></div>
+                    </div>
+                {% else %}
+                    <br>
+                {% endif %}
+
             </div>
         </div>
     </div>
 </div>
+
+{% block scripts %}
+    <script>
+        $('.like').unbind().click(function () {
+
+            var dislike = $(this).siblings(".dislike").eq(0);
+            if(dislike.hasClass( "dislike-color" )){
+                dislike.toggleClass( "dislike-color" )
+            }
+
+{#            $(this).toggleClass( "like-color" );#}
+
+           $.ajax({
+                url : $(this).data("url"),
+                type : "POST",
+                headers : {
+                    'X-CSRFToken':"{{ csrf_token }}"
+                },
+                data : {
+                    message_id : $(this).data("id"),
+                    value: $(this).data("value")
+                },
+
+                success : function(data) {
+
+                }
+            });
+
+            $(this).toggleClass( "like-color" );
+        });
+
+        $('.dislike').unbind().click(function () {
+
+            var like = $(this).siblings(".like").eq(0);
+            if(like.hasClass( "like-color" )){
+                like.toggleClass( "like-color" )
+            }
+
+            $.ajax({
+                url : $(this).data("url"),
+                type : "POST",
+                headers : {
+                    'X-CSRFToken':"{{ csrf_token }}"
+                },
+                data : {
+                    message_id : $(this).data("id"),
+                    value: $(this).data("value")
+                },
+
+                success : function(data) {
+
+                }
+            });
+
+            $(this).toggleClass( "dislike-color" );
+{#            console.log( $(this).data("id") );#}
+        });
+    </script>
+
+{% endblock %}

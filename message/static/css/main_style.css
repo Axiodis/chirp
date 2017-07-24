@@ -17,6 +17,22 @@
 	z-index: -1;
 }
 
+
+
+.icon-item{
+    margin-left: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.like-color{
+    color: deepskyblue;
+}
+
+.dislike-color{
+    color: red;
+}
+
 /*Messages style*/
 .testimonial{
     margin-bottom: 10px;

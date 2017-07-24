@@ -2,7 +2,7 @@ from django.conf.urls import url
 from django.views.generic.base import TemplateView
 from django.contrib.auth import views as auth_views
 
-from message.views import RegisterView, MessageView, TimelineView, ProfileView, FollowView, UnfollowView
+from message.views import RegisterView, MessageView, TimelineView, ProfileView, FollowView, UnfollowView, LikeView
 from . import views
 
 urlpatterns = [
@@ -14,4 +14,6 @@ urlpatterns = [
     url(r'^message/$', MessageView.as_view(), name='message'),
     url(r'^login/$', auth_views.login,{'template_name': 'auth/login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout,{'next_page': 'index'}, name='logout'),
+    url(r'^like/$', LikeView.as_view(), name='like'),
+
 ]

@@ -1,12 +1,14 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse
+from django.views import View
 from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView
 
 from django.views.generic.edit import CreateView, DeleteView
 from message.forms import RegisterForm, MessageForm
-from message.models import Message, Follow
+from message.models import Message, Follow, Like
 
 
 class RegisterView(CreateView):
@@ -27,7 +29,6 @@ class MessageView(CreateView):
 
 
 class FollowView(CreateView):
-
     def get(self, request, *args, **kwargs):
         followed_user = User.objects.filter(id=kwargs['id'])[0]
         f = Follow(following_user=request.user, followed_user=followed_user)
@@ -48,7 +49,20 @@ class TimelineView(ListView):
     context_object_name = 'messages'
 
     def get_queryset(self):
-        return Message.objects.all().order_by('-created')
+        messages = Message.objects.all().order_by('-created')
+        if self.request.user.is_authenticated():
+            for message in messages:
+                message.liked = 0
+                message.disliked = 0
+                try:
+                    like = message.like_set.get(user=self.request.user, message=message)
+                    if like.like:
+                        message.liked = 1
+                    else:
+                        message.disliked = 1
+                except ObjectDoesNotExist:
+                    pass
+        return messages
 
 
 class ProfileView(LoginRequiredMixin, DetailView):
@@ -65,5 +79,23 @@ class ProfileView(LoginRequiredMixin, DetailView):
         context['following'] = len(Follow.objects.filter(following_user=context['current_user']))
         context['followers'] = len(Follow.objects.filter(followed_user=context['current_user']))
         context['messages_number'] = len(context['messages'])
-        context['followed'] = Follow.objects.filter(following_user=self.request.user).filter(followed_user=context['current_user'])
+        context['followed'] = Follow.objects.filter(following_user=self.request.user).filter(
+            followed_user=context['current_user'])
         return context
+
+
+class LikeView(View):
+    def post(self, request, *args, **kwargs):
+
+        message = Message.objects.filter(id=request.POST['message_id'])[0]
+        try:
+            like_dislike = Like.objects.get(message=message, user=self.request.user)
+            if int(like_dislike.like) == int(request.POST['value']):
+                like_dislike.delete()
+            else:
+                like_dislike.like = request.POST['value']
+                like_dislike.save()
+        except ObjectDoesNotExist:
+            like_dislike = Like(user=self.request.user, message=message, like=request.POST['value'])
+            like_dislike.save()
+        return HttpResponse('')
