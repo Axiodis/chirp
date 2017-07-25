@@ -24,7 +24,7 @@ SECRET_KEY = '068nbw&#18walzqog&!-9)+)6h07_sbcjg^+43+sd6ulr#ivhf'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['axiodis.pythonanywhere.com']
 
 # Application definition
 
@@ -114,7 +114,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-LOGIN_REDIRECT_URL = 'index'
+LOGIN_REDIRECT_URL = 'login'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
