@@ -22,16 +22,16 @@
                 <div class="pull-right">
                     <small>{{ message.created }}</small>
                 </div>
-                {% if user.is_authenticated %}
+                {% if user.is_authenticated%}
                     <hr>
                     <div class="icon-bar">
 
-                        <div class="glyphicon glyphicon-thumbs-up icon-item like {% if message.liked%}like-color{% endif %}"
+                        <div class="glyphicon glyphicon-thumbs-up icon-item like {% if message.liked %}like-color{% endif %}"
                              data-id="{{ message.id }}"
                              data-value="1"
                              data-url="{% url 'like' %}"></div>
 
-                        <div class="glyphicon glyphicon-thumbs-down icon-item dislike {% if message.disliked%}dislike-color{% endif %}"
+                        <div class="glyphicon glyphicon-thumbs-down icon-item dislike {% if message.disliked %}dislike-color{% endif %}"
                              data-id="{{ message.id }}"
                              data-value = 0
                              data-url="{% url 'like' %}"></div>
@@ -57,7 +57,6 @@
                 dislike.toggleClass( "dislike-color" )
             }
 
-{#            $(this).toggleClass( "like-color" );#}
 
            $.ajax({
                 url : $(this).data("url"),
@@ -68,10 +67,6 @@
                 data : {
                     message_id : $(this).data("id"),
                     value: $(this).data("value")
-                },
-
-                success : function(data) {
-
                 }
             });
 
@@ -94,15 +89,10 @@
                 data : {
                     message_id : $(this).data("id"),
                     value: $(this).data("value")
-                },
-
-                success : function(data) {
-
                 }
             });
 
             $(this).toggleClass( "dislike-color" );
-{#            console.log( $(this).data("id") );#}
         });
     </script>
 

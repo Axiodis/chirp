@@ -81,13 +81,26 @@ class ProfileView(LoginRequiredMixin, DetailView):
         context['messages_number'] = len(context['messages'])
         context['followed'] = Follow.objects.filter(following_user=self.request.user).filter(
             followed_user=context['current_user'])
+
+        for message in context['messages']:
+            message.liked = 0
+            message.disliked = 0
+            try:
+                like = message.like_set.get(user=self.request.user, message=message)
+                if like.like:
+                    message.liked = 1
+                else:
+                    message.disliked = 1
+            except ObjectDoesNotExist:
+                pass
+
         return context
 
 
 class LikeView(View):
     def post(self, request, *args, **kwargs):
 
-        message = Message.objects.filter(id=request.POST['message_id'])[0]
+        message = Message.objects.get(id=request.POST['message_id'])
         try:
             like_dislike = Like.objects.get(message=message, user=self.request.user)
             if int(like_dislike.like) == int(request.POST['value']):
