@@ -114,11 +114,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, 'media'),
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),
+#     os.path.join(BASE_DIR, 'message/static'),
+#     os.path.join(BASE_DIR, 'media'),
+# ]
 
+LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'index'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

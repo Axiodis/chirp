@@ -2,12 +2,9 @@
     <div class="row">
         <div class="col-md-2 col-sm-3 col-xs-3">
             <div class="testimonial-desc">
-                <div>
-                    <img src="https://placeholdit.imgix.net/~text?txtsize=9&txt=100%C3%97100&w=100&h=100" alt="" />
-                </div>
-                <div class="testimonial-writer">
-                    <div class="testimonial-writer-name"><strong>@{{ message.user.username }}</strong></div>
-                </div>
+                <img src="https://placeholdit.imgix.net/~text?txtsize=9&txt=100%C3%97100&w=100&h=100" alt=""/>
+                <strong><a
+                        href="{% url 'profile' slug=message.user.username %}">@{{ message.user.username }}</a></strong>
             </div>
         </div>
         <div class="col-md-10 col-sm-9 col-xs-9">
@@ -15,14 +12,14 @@
                 {{ message.status }}
 
                 {% if message.image %}
-                    <img src="{{ message.image.url }}" class="img-responsive message-image" >
+                    <img src="{{ message.image.url }}" class="img-responsive message-image">
                 {% endif %}
 
                 <br>
                 <div class="pull-right">
                     <small>{{ message.created }}</small>
                 </div>
-                {% if user.is_authenticated%}
+                {% if user.is_authenticated %}
                     <hr>
                     <div class="icon-bar">
 
@@ -33,7 +30,7 @@
 
                         <div class="glyphicon glyphicon-thumbs-down icon-item dislike {% if message.disliked %}dislike-color{% endif %}"
                              data-id="{{ message.id }}"
-                             data-value = 0
+                             data-value=0
                              data-url="{% url 'like' %}"></div>
 
 
@@ -53,47 +50,46 @@
         $('.like').unbind().click(function () {
 
             var dislike = $(this).siblings(".dislike").eq(0);
-            if(dislike.hasClass( "dislike-color" )){
-                dislike.toggleClass( "dislike-color" )
+            if (dislike.hasClass("dislike-color")) {
+                dislike.toggleClass("dislike-color")
             }
 
 
-           $.ajax({
-                url : $(this).data("url"),
-                type : "POST",
-                headers : {
-                    'X-CSRFToken':"{{ csrf_token }}"
+            $.ajax({
+                url: $(this).data("url"),
+                type: "POST",
+                headers: {
+                    'X-CSRFToken': "{{ csrf_token }}"
                 },
-                data : {
-                    message_id : $(this).data("id"),
+                data: {
+                    message_id: $(this).data("id"),
                     value: $(this).data("value")
                 }
             });
 
-            $(this).toggleClass( "like-color" );
+            $(this).toggleClass("like-color");
         });
 
         $('.dislike').unbind().click(function () {
 
             var like = $(this).siblings(".like").eq(0);
-            if(like.hasClass( "like-color" )){
-                like.toggleClass( "like-color" )
+            if (like.hasClass("like-color")) {
+                like.toggleClass("like-color")
             }
 
             $.ajax({
-                url : $(this).data("url"),
-                type : "POST",
-                headers : {
-                    'X-CSRFToken':"{{ csrf_token }}"
+                url: $(this).data("url"),
+                type: "POST",
+                headers: {
+                    'X-CSRFToken': "{{ csrf_token }}"
                 },
-                data : {
-                    message_id : $(this).data("id"),
+                data: {
+                    message_id: $(this).data("id"),
                     value: $(this).data("value")
                 }
             });
 
-            $(this).toggleClass( "dislike-color" );
+            $(this).toggleClass("dislike-color");
         });
     </script>
-
 {% endblock %}

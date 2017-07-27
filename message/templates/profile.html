@@ -2,34 +2,33 @@
 
 {% block content %}
 
-<div class="container">
-	<div class="row">
-		<div class="col-sm-3">
-			<div class="panel panel-default">
-				<div class="panel-body">
-					<a href="#"><img class="img-responsive" alt="" src="http://placehold.it/800x500"></a>
-					<div class="row">
-						<div class="col-xs-3">
-							<h5>
-								<small>CHIRPS</small>
-								<a href="#">{{ messages_number }}</a>
-							</h5>
-						</div>
-						<div class="col-xs-4">
-							<h5>
-								<small>FOLLOWING</small>
-								<a href="#">{{ following }}</a>
-							</h5>
-						</div>
-						<div class="col-xs-4">
-							<h5>
-								<small>FOLLOWERS</small>
-								<a href="#">{{ followers }}</a>
-							</h5>
-						</div>
-					</div>
+    <div class="row">
+        <div class="col-sm-3 col-xs-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="#"><img class="img-responsive" alt="" src="http://placehold.it/800x500"></a>
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <h5>
+                                <small>CHIRPS</small>
+                                <a href="#">{{ messages|length }}</a>
+                            </h5>
+                        </div>
+                        <div class="col-xs-4">
+                            <h5>
+                                <small>FOLLOWING</small>
+                                <a href="#">{{ following|length }}</a>
+                            </h5>
+                        </div>
+                        <div class="col-xs-4">
+                            <h5>
+                                <small>FOLLOWERS</small>
+                                <a href="#">{{ followers|length }}</a>
+                            </h5>
+                        </div>
+                    </div>
                     {% if current_user.id != user.id %}
-                        {% if followed %}
+                        {% if user in followers %}
                             <a href="{% url 'unfollow' id=current_user.id %}" class="btn btn-primary">
                                 Unfollow
                             </a>
@@ -39,113 +38,138 @@
                             </a>
                         {% endif %}
                     {% endif %}
-				</div>
-			</div>
+                </div>
+            </div>
 
-			<div class="panel panel-default panel-custom">
-				<div class="panel-heading">
-					<h3 class="panel-title">
-						Trends
-					</h3>
-				</div>
+            <div class="panel panel-default panel-custom">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Trends
+                    </h3>
+                </div>
 
-				<div class="panel-body">
-					<ul class="list-unstyled">
-						<li><a href="#">#Cras justo odio</a></li>
-						<li><a href="#">#Dapibus ac facilisis in</a></li>
-						<li><a href="#">#Morbi leo risus</a></li>
-						<li><a href="#">#Porta ac consectetur ac</a></li>
-						<li><a href="#">#Vestibulum at eros</a></li>
-						<li><a href="#">#Vestibulum at eros</a></li>
-						<li><a href="#">#Vestibulum at eros</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-		<div class="col-sm-6">
-			{% for message in messages %}
-                {% include 'partials/message.html' with mesaage=message %}
-            {% endfor %}
-		</div>
+                <div class="panel-body">
+                    <ul class="list-unstyled">
+                        <li><a href="#">#Cras justo odio</a></li>
+                        <li><a href="#">#Dapibus ac facilisis in</a></li>
+                        <li><a href="#">#Morbi leo risus</a></li>
+                        <li><a href="#">#Porta ac consectetur ac</a></li>
+                        <li><a href="#">#Vestibulum at eros</a></li>
+                        <li><a href="#">#Vestibulum at eros</a></li>
+                        <li><a href="#">#Vestibulum at eros</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xs-5">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#chirps">Chirps</a></li>
+                <li><a data-toggle="tab" href="#followers">Followers</a></li>
+                <li><a data-toggle="tab" href="#following">Following</a></li>
+            </ul>
 
-		<div class="col-sm-3">
-			<div class="panel panel-default panel-custom">
-				<div class="panel-heading">
-					<h3 class="panel-title">
-						Who to follow
-						<small><a href="#">Refresh</a> ● <a href="#">View all</a></small>
-					</h3>
-				</div>
-				<div class="panel-body">
-					<div class="media">
-						<div class="media-left">
-							<img src="http://placehold.it/32x32" alt="" class="media-object img-rounded">
-						</div>
-						<div class="media-body">
-							<h4 class="media-heading">Nome e cognome</h4>
-							<a href="#" class="btn btn-default btn-xs">
-								+
-								<span class="glyphicon glyphicon-user"></span>
-								Follow
-							</a>
-						</div>
-					</div>
-					<div class="media">
-						<div class="media-left">
-							<img src="http://placehold.it/32x32" alt="" class="media-object img-rounded">
-						</div>
-						<div class="media-body">
-							<h4 class="media-heading">Nome e cognome</h4>
-							<a href="#" class="btn btn-default btn-xs">
-								+
-								<span class="glyphicon glyphicon-user"></span>
-								Follow
-							</a>
-						</div>
-					</div>
-					<div class="media">
-						<div class="media-left">
-							<img src="http://placehold.it/32x32" alt="" class="media-object img-rounded">
-						</div>
-						<div class="media-body">
-							<h4 class="media-heading">Nome e cognome</h4>
-							<a href="#" class="btn btn-default btn-xs">
-								+
-								<span class="glyphicon glyphicon-user"></span>
-								Follow
-							</a>
-						</div>
-					</div>
-				</div>
-				<div class="panel-footer">
-					<a href="">
-						<span class="glyphicon glyphicon-user"></span>
-						Find people you know
-					</a>
-				</div>
-			</div>
-			<div class="well well-sm">
-				<ul class="list-inline">
-					<li>© 2017 Chirp</li>
-					<li><a href="#">About</a></li>
-					<li><a href="#">Help</a></li>
-					<li><a href="#">Terms</a></li>
-					<li><a href="#">Privacy</a></li>
-					<li><a href="#">Cookies</a></li>
-					<li><a href="#">Ads info</a></li>
-					<li><a href="#">Brand</a></li>
-					<li><a href="#">Blog</a></li>
-					<li><a href="#">Status</a></li>
-					<li><a href="#">Apps</a></li>
-					<li><a href="#">Jobs</a></li>
-					<li><a href="#">Advertise</a></li>
-					<li><a href="#">Businesses</a></li>
-					<li><a href="#">Media</a></li>
-					<li><a href="#">Developers</a></li>
-				</ul>
-			</div>
-		</div>
-	</div>
-</div>
+            <div class="tab-content">
+                <div id="chirps" class="tab-pane fade in active">
+                <br>
+                    {% for message in messages %}
+                        {% include 'partials/message.html' with mesaage=message %}
+                    {% endfor %}
+                </div>
+                <div id="followers" class="tab-pane fade">
+                    <br>
+                    <div class="row">
+                        {% for follower in followers  %}
+                            {% include 'partials/small-user.html' with f_user=follower %}
+                        {% endfor %}
+                    </div>
 
+                </div>
+                <div id="following" class="tab-pane fade">
+                    <br>
+                    {% for followed in following %}
+                        {% include 'partials/small-user.html' with f_user=followed %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-sm-3 col-xs-3">
+            <div class="panel panel-default panel-custom">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Who to follow
+                        <small><a href="#">Refresh</a> ● <a href="#">View all</a></small>
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="media">
+                        <div class="media-left">
+                            <img src="http://placehold.it/32x32" alt="" class="media-object img-rounded">
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">Nome e cognome</h4>
+                            <a href="#" class="btn btn-default btn-xs">
+                                +
+                                <span class="glyphicon glyphicon-user"></span>
+                                Follow
+                            </a>
+                        </div>
+                    </div>
+                    <div class="media">
+                        <div class="media-left">
+                            <img src="http://placehold.it/32x32" alt="" class="media-object img-rounded">
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">Nome e cognome</h4>
+                            <a href="#" class="btn btn-default btn-xs">
+                                +
+                                <span class="glyphicon glyphicon-user"></span>
+                                Follow
+                            </a>
+                        </div>
+                    </div>
+                    <div class="media">
+                        <div class="media-left">
+                            <img src="http://placehold.it/32x32" alt="" class="media-object img-rounded">
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">Nome e cognome</h4>
+                            <a href="#" class="btn btn-default btn-xs">
+                                +
+                                <span class="glyphicon glyphicon-user"></span>
+                                Follow
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <a href="">
+                        <span class="glyphicon glyphicon-user"></span>
+                        Find people you know
+                    </a>
+                </div>
+            </div>
+            <div class="well well-sm">
+                <ul class="list-inline">
+                    <li>© 2017 Chirp</li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Help</a></li>
+                    <li><a href="#">Terms</a></li>
+                    <li><a href="#">Privacy</a></li>
+                    <li><a href="#">Cookies</a></li>
+                    <li><a href="#">Ads info</a></li>
+                    <li><a href="#">Brand</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Status</a></li>
+                    <li><a href="#">Apps</a></li>
+                    <li><a href="#">Jobs</a></li>
+                    <li><a href="#">Advertise</a></li>
+                    <li><a href="#">Businesses</a></li>
+                    <li><a href="#">Media</a></li>
+                    <li><a href="#">Developers</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 {% endblock %}

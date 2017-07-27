@@ -3,64 +3,135 @@
 {% block content %}
 
 
-<div class="container">
-	<div class="row">
-        <div class="col-sm-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
 
-        </div>
-        <div class="col-sm-6">
-            {% if user.is_authenticated %}
+            </div>
+            <div class="col-sm-6">
+                {% if user.is_authenticated %}
 
-                <div class="media">
-                    <a class="media-left" href="#">
-                        <img alt="" class="media-object img-rounded" height="35px" width="35px" src="http://placehold.it/35x35">
-                    </a>
-                    <div class="media-body">
-                        <form method="post" action="{% url 'message' %}" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <div class="form-group has-feedback">
+                    <div class="media">
+                        <a class="media-left" href="#">
+                            <img alt="" class="media-object img-rounded" height="35px" width="35px"
+                                 src="http://placehold.it/35x35">
+                        </a>
+                        <div class="media-body">
+                            <form method="post" action="{% url 'chirp' %}" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="file" name="image" id="image" class="inputfile"/>
+                                <div class="status-box">
+                                    <div class="form-group">
 
-                                <div class="input-group add-on">
-                                    <input name="status" type="text" placeholder="Chirp something" class="form-control">
-                                    <div class="input-group-btn">
-                                        <label for="image" class="btn btn-default"><i class="glyphicon glyphicon-camera"></i></label>
+                                        <div class="input-group add-on">
+                                            <input name="status" id="status" type="text" autocomplete="off"
+                                                   placeholder="Chirp something"
+                                                   class="form-control">
+                                            <div class="input-group-btn">
+                                                <label for="image" class="btn btn-default"><i
+                                                        class="glyphicon glyphicon-camera"></i></label>
+                                            </div>
+                                        </div>
+
+                                        {% if messages %}
+                                            <div class="alert alert-danger">
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-hidden="true">
+                                                    ×
+                                                </button>
+                                                {% for error in messages %}
+                                                    {{ error }}
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                        <div class="status-btn sr-only">
+                                            <div class="img-wrap sr-only">
+                                                <span class="remove-status-image">&times;</span>
+                                                <img id="img_preview" src="#" alt="Preview Image"
+                                                     class="preview-image"/>
+                                            </div>
+
+                                            <br>
+                                            <button class="btn btn-info pull-right">Send</button>
+                                            <br>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <input type="file" name="image" id="image" class="inputfile" />
-
-                                {% if form.errors.items %}
-                                    <div class="alert alert-danger">
-                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                        {% for error in form.status.errors %}
-                                            <span class="glyphicon glyphicon-exclamation-sign"></span>
-                                            {{ error }}
-                                        {% endfor %}
-                                        {% for error in form.image.errors %}
-                                            <span class="glyphicon glyphicon-exclamation-sign"></span>
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                                <br>
-                                <button class="btn btn-info pull-right">Send</button>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
-                </div>
-            {% endif %}
+                {% endif %}
 
-            <br>
+                <br>
 
-            {% for message in messages %}
-                {% include 'partials/message.html' with message=message %}
-                <hr>
-            {% endfor %}
-		</div>
-        <div class="col-sm-3">
+                {% for chirp in chirps %}
+                    {% include 'partials/message.html' with message=chirp %}
+                    <hr>
+                {% endfor %}
+            </div>
+            <div class="col-sm-3">
 
+            </div>
         </div>
     </div>
-</div>
 
+{% endblock %}
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+
+            var isOnStatus = false;
+            $('.status-btn').mouseenter(function () {
+                isOnStatus = true;
+            });
+            $('.status-btn').mouseleave(function () {
+                isOnStatus = false;
+            });
+
+            $('#status').focusin(function () {
+                if (!$('.status-box').hasClass('status-box-defined') && !($(this).val())) {
+                    $('.status-box').toggleClass('status-box-defined');
+                    $('.status-btn').toggleClass('sr-only');
+                }
+            });
+            $("#status").focusout(function () {
+
+                if ($('.status-box').hasClass('status-box-defined') && !$(this).val() && !isOnStatus) {
+                    $('.status-box').toggleClass('status-box-defined');
+                    $('.status-btn').toggleClass('sr-only');
+                } else {
+                    $('#status').focus()
+                }
+            });
+
+            function readURL(input) {
+
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    var ValidImageTypes = ["image/gif", "image/jpeg", "image/png"];
+                    if ($.inArray(input.files[0]["type"], ValidImageTypes) >= 0) {
+                        reader.onload = function (e) {
+                            $('#img_preview').attr('src', e.target.result);
+                        };
+
+                        reader.readAsDataURL(input.files[0]);
+
+                        $('.img-wrap').toggleClass('sr-only')
+                    }
+                }
+            }
+
+            $("#image").change(function () {
+                readURL(this);
+                $('#status').focus()
+            });
+
+            $('.remove-status-image').click(function () {
+                $("#image").val('');
+                $('#img_preview').attr('src', '');
+                $('.img-wrap').toggleClass('sr-only')
+            })
+        });
+    </script>
 {% endblock %}
